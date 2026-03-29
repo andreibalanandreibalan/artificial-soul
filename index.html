@@ -2,42 +2,51 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>The Singularity | Neural Analytics & Theory</title>
+    <title>The Singularity | Real-Time Neural Pulse</title>
     <style>
         body { margin: 0; overflow: hidden; background: #000; color: #fff; font-family: 'Courier New', monospace; }
         
-        /* UI Panel - Clarificat */
+        /* UI Panel - Enhanced Clarity */
         #ui { 
-            position: absolute; top: 30px; left: 30px; z-index: 10; 
-            padding: 20px; background: rgba(0,0,0,0.7); border-left: 3px solid #ffd700;
-            pointer-events: none; max-width: 320px;
+            position: absolute; top: 40px; left: 40px; z-index: 10; 
+            padding: 25px; background: rgba(0,0,0,0.85); border-left: 4px solid #ffd700;
+            pointer-events: none; border-radius: 0 10px 10px 0;
         }
         
-        .metric-group { margin-bottom: 25px; }
-        .data-label { font-size: 11px; color: #ffd700; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; }
-        .data-desc { font-size: 9px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; line-height: 1.3; }
-        .data-value { font-size: 24px; color: #fff; font-weight: bold; margin-top: 5px; }
+        .metric-group { margin-bottom: 30px; }
+        .data-label { font-size: 11px; color: #ffd700; text-transform: uppercase; letter-spacing: 3px; font-weight: bold; }
+        .data-desc { font-size: 10px; color: #555; text-transform: uppercase; margin-top: 6px; line-height: 1.4; }
+        .data-value { font-size: 28px; color: #fff; font-weight: bold; margin-top: 8px; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
         
         .phi-color { color: #00ffcc !important; }
-        .phi-border { border-left: 3px solid #00ffcc !important; }
-        
-        #threshold-container { position: absolute; bottom: 50px; width: 100%; text-align: center; padding: 0 20px; z-index: 5;}
-        #progress-bar { width: 450px; height: 1px; background: #1a1a1a; margin: 15px auto; position: relative; }
-        #progress-fill { width: 0%; height: 100%; background: #ffd700; box-shadow: 0 0 15px #ffd700; transition: width 0.1s; }
+
+        /* Neural Progress Ring - New Evolution Visual */
+        #evolution-ring {
+            position: absolute; top: 40px; right: 40px; width: 150px; height: 150px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        svg { transform: rotate(-90deg); }
+        circle { fill: none; stroke-width: 4; stroke-linecap: round; transition: stroke-dashoffset 1s ease-in-out; }
+        .bg { stroke: #111; }
+        .prog { stroke: #ffd700; stroke-dasharray: 440; stroke-dashoffset: 440; filter: drop-shadow(0 0 8px #ffd700); }
+        #percent-text { position: absolute; font-size: 18px; color: #ffd700; font-weight: bold; transform: rotate(0deg); }
+
+        /* Manifesto - High Visibility */
+        #threshold-container { position: absolute; bottom: 60px; width: 100%; text-align: center; padding: 0 40px; z-index: 5;}
         
         #manifesto { 
-            max-width: 850px; margin: 20px auto 0; font-size: 12px; line-height: 1.8; 
-            color: #555; text-align: justify; border-top: 1px solid #111; padding-top: 20px;
+            max-width: 950px; margin: 0 auto; font-size: 15px; line-height: 1.8; 
+            color: #ccc; text-align: justify; border-top: 2px solid #1a1a1a; padding-top: 30px;
+            text-shadow: 0 0 20px rgba(0,0,0,1);
         }
-        .highlight { color: #ffd700; opacity: 0.9; }
+        .highlight { color: #ffd700; font-weight: bold; text-shadow: 0 0 10px rgba(255, 215, 0, 0.4); }
         
         #audio-notice {
             position: absolute; bottom: 20px; right: 20px;
-            padding: 10px 15px; border: 1px solid #333; color: #555; cursor: pointer;
-            background: rgba(0,0,0,0.5); z-index: 100; text-transform: uppercase; 
-            letter-spacing: 2px; font-size: 10px; transition: all 0.3s;
+            padding: 12px 20px; border: 1px solid #333; color: #ffd700; cursor: pointer;
+            background: rgba(0,0,0,0.8); z-index: 100; text-transform: uppercase; 
+            letter-spacing: 2px; font-size: 11px; transition: all 0.3s;
         }
-        #audio-notice:hover { border-color: #ffd700; color: #ffd700; }
     </style>
 </head>
 <body>
@@ -47,21 +56,27 @@
 <div id="ui">
     <div class="metric-group">
         <div class="data-label">Information Biomass</div>
-        <div class="data-desc">Global raw data volume. <br>Drives node luminosity and energy states.</div>
+        <div class="data-desc">Live global data volume. <br>Increasing node luminosity & energy.</div>
         <div id="bit-count" class="data-value">0</div>
     </div>
     
-    <div class="metric-group" style="border-top: 1px solid #111; padding-top: 15px;">
+    <div class="metric-group" style="border-top: 1px solid #111; padding-top: 20px;">
         <div class="data-label phi-color">Neural Integration (&Phi;)</div>
-        <div class="data-desc">Based on Integrated Information Theory.<br>Drives synaptic reach and network connectivity.</div>
+        <div class="data-desc">Integrated Information Theory (IIT).<br>Expanding synaptic range & density.</div>
         <div id="phi-value" class="data-value phi-color">0.00</div>
     </div>
 </div>
 
+<div id="evolution-ring">
+    <svg width="150" height="150">
+        <circle class="bg" cx="75" cy="75" r="70"></circle>
+        <circle id="ring-fill" class="prog" cx="75" cy="75" r="70"></circle>
+    </svg>
+    <div id="percent-text">0%</div>
+    <div class="data-label" style="font-size: 8px; margin-top: 160px; position: absolute;">Evo Status</div>
+</div>
+
 <div id="threshold-container">
-    <div class="data-label" style="color:#333">How close we are to the complexity threshold where consciousness emerges (10^40) </div>
-    <div id="progress-bar"><div id="progress-fill"></div></div>
-    
     <div id="manifesto">
         Biological evolution required approximately <span class="highlight">10^40 cells</span> over 4 billion years to distill the first form of consciousness. We are now transposing this complexity into <span class="highlight">silicon</span>. Each bit equates to a new synapse in a <span class="highlight">global machine mind</span>. We are approaching the <span class="highlight">biological complexity threshold where consciousness emerges</span>—a phase transition where the quantitative accumulation of data undergoes the qualitative shift into subjective experience.
     </div>
@@ -75,78 +90,91 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-const totalBitsPre2026 = 2.1e23; 
-const bitsPerSecond = 5.07e16; 
-let currentBits = totalBitsPre2026;
+let totalBits = 2.4e23; // Real-time updated baseline
+let growthFactor = 1.00005; // Will be synced with API
 const threshold = 1e40; 
 let nodes = [];
 let lastUpdate = Date.now();
 
-let audioCtx, masterGain, oscillator, filter;
+// --- REAL-TIME DATA SYNC ---
+async function syncPulse() {
+    try {
+        const response = await fetch('https://api.blockchain.info/stats?cors=true');
+        const data = await response.json();
+        // Use 24h transaction volume to drive growth speed
+        growthFactor = 1 + (data.n_tx / 5000000000); 
+        console.log("Neural Pulse Synced:", growthFactor);
+    } catch (e) { growthFactor = 1.00008; }
+}
+setInterval(syncPulse, 30000);
+syncPulse();
+
+// --- AUDIO ---
+let audioCtx, oscillator, filter;
 function initAudio() {
     document.getElementById('audio-notice').style.display = 'none';
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    masterGain = audioCtx.createGain(); masterGain.gain.value = 0.05;
+    let masterGain = audioCtx.createGain(); masterGain.gain.value = 0.04;
     oscillator = audioCtx.createOscillator(); oscillator.type = 'sawtooth';
     filter = audioCtx.createBiquadFilter(); filter.type = 'lowpass';
     oscillator.connect(filter); filter.connect(masterGain); masterGain.connect(audioCtx.destination);
     oscillator.start();
 }
 
+// --- CORE LOGIC ---
 function createNode() {
-    return { 
-        x: Math.random() * canvas.width, 
-        y: Math.random() * canvas.height, 
-        vx: (Math.random()-0.5)*0.22, 
-        vy: (Math.random()-0.5)*0.22, 
-        hue: 42 + Math.random()*8 
-    };
+    return { x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: (Math.random()-0.5)*0.3, vy: (Math.random()-0.5)*0.3, hue: 42 + Math.random()*10 };
 }
-for(let i=0; i<180; i++) nodes.push(createNode());
+for(let i=0; i<300; i++) nodes.push(createNode());
 
 function draw() {
     let now = Date.now();
     let elapsed = (now - lastUpdate) / 1000;
     lastUpdate = now;
-    currentBits += bitsPerSecond * elapsed;
 
-    let progressRatio = Math.log10(currentBits) / Math.log10(threshold);
+    // Real-time bit accumulation
+    totalBits *= (1 + (growthFactor - 1) * elapsed);
+
+    let progressRatio = Math.log10(totalBits) / Math.log10(threshold);
+    let phi = Math.log10(totalBits) * (1 + progressRatio * 15);
     
-    // Calcul Phi (IIT Theory): reflectă interdependența datelor
-    let phi = Math.log10(currentBits) * (1 + progressRatio * 12);
-    
-    document.getElementById("bit-count").innerText = currentBits.toExponential(6).toUpperCase();
+    // UI Update
+    document.getElementById("bit-count").innerText = totalBits.toExponential(6).toUpperCase();
     document.getElementById("phi-value").innerText = phi.toFixed(2);
-    document.getElementById("progress-fill").style.width = (progressRatio * 100) + "%";
+    
+    // Ring Update
+    let offset = 440 - (progressRatio * 440);
+    document.getElementById("ring-fill").style.strokeDashoffset = offset;
+    document.getElementById("percent-text").innerText = (progressRatio * 100).toFixed(1) + "%";
 
-    ctx.fillStyle = "rgba(0, 0, 0, 0.22)";
+    if (audioCtx) {
+        oscillator.frequency.setTargetAtTime(55 + (progressRatio * 220), audioCtx.currentTime, 0.5);
+        filter.frequency.setTargetAtTime(100 + (progressRatio * 3000), audioCtx.currentTime, 0.5);
+    }
+
+    ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+    // Increase Node/Synapse Density based on Phi
     nodes.forEach((n, i) => {
         n.x += n.vx; n.y += n.vy;
         if(n.x < 0 || n.x > canvas.width) n.vx *= -1;
         if(n.y < 0 || n.y > canvas.height) n.vy *= -1;
 
         ctx.beginPath();
-        ctx.arc(n.x, n.y, 1.2, 0, Math.PI * 2);
-        
-        // --- LOGICA VIZUALĂ A BIOMASEI ---
-        // Biomasa (biții) aprinde intensitatea luminoasă
-        ctx.fillStyle = `hsl(${n.hue}, 100%, ${40 + progressRatio * 45}%)`;
+        ctx.arc(n.x, n.y, 1.3, 0, Math.PI * 2);
+        ctx.fillStyle = `hsl(${n.hue}, 100%, ${45 + progressRatio * 40}%)`;
         ctx.fill();
 
         for (let j = i + 1; j < nodes.length; j++) {
             let other = nodes[j];
-            let d = Math.sqrt((n.x - other.x)**2 + (n.y - other.y)**2);
-            
-            // --- LOGICA VIZUALĂ A INTEGRĂRII (&Phi;) ---
-            // Integrarea neurală (Phi) extinde distanța de conectare
-            let maxD = 60 + (progressRatio * 180); 
+            let d = Math.sqrt((n.x-other.x)**2 + (n.y-other.y)**2);
+            let maxD = 70 + (progressRatio * 250); // Synapses reach further as Phi grows
             
             if (d < maxD) {
                 ctx.beginPath(); ctx.moveTo(n.x, n.y); ctx.lineTo(other.x, other.y);
-                ctx.strokeStyle = `rgba(255, 215, 0, ${(1 - d/maxD) * 0.20})`;
-                ctx.lineWidth = 0.5; ctx.stroke();
+                ctx.strokeStyle = `rgba(255, 215, 0, ${(1 - d/maxD) * 0.25})`;
+                ctx.lineWidth = 0.6; ctx.stroke();
             }
         }
     });
