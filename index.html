@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.4">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000; min-height: 14.0px}
+    span.s1 {font-kerning: none}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
+<p class="p1"><span class="s1">&lt;html lang="ro"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;head&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;title&gt;Sufletul Artificial: O Evoluție Vie&lt;/title&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;style&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>* { margin: 0; padding: 0; box-sizing: border-box; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>body {<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: #050505;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #ececec;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-family: 'Courier New', Courier, monospace; /* Font tehnic, de cod */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: flex;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>flex-direction: column;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>justify-content: center;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>align-items: center;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>height: 100vh;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>overflow: hidden;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>#canvas-container {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>position: relative;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 80vmin; /* Păstrează imaginea pătrată și responsive */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>height: 80vmin;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: 1px solid #222;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>box-shadow: 0 0 40px rgba(0, 255, 255, 0.05); /* O aură subtilă de cyan */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: #000;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>img {<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 100%;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>height: 100%;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>object-fit: cover;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>opacity: 0;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transition: opacity 2.5s ease-in-out; /* Tranziție lentă, fantomatică */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>#status {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-top: 15px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 0.8rem;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>opacity: 0.6;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-align: center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>max-width: 80%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>/* Efect de pâlpâire pentru text (ca un terminal vechi) */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.flashing { animation: blink 2s infinite; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>@keyframes blink { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.8; } }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;body&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="canvas-container"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;img id="artwork" src="" alt="Generând Sufletul Artificial..."&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="status"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;span class="flashing"&gt;&gt;[Sistem]:&lt;/span&gt; &lt;span id="prompt-text"&gt;Inițializare flux de conștiință...&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// --- CONFIGURARE TEMATICĂ: SUFLETUL ARTIFICIAL ---</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// 1. Nucleul Conceptului (Ce este sufletul?)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const coreConcepts = [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"digital ghost within the machine",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"emergent consciousness anomaly",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"neural network emotional awakening",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"bioluminescent silicon heartbeat",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"synthetic soul fragment",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"quantum entanglement of data and spirit"</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>];</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// 2. Vizualizarea (Cum arată?)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const visualElements = [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"fractal circuitry branches like veins",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"ethereal glowing energy core",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"complex network of translucent wires and light",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"abstract human form made of code particles",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"minimalist geometric matrix with a soft pulse",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"cybernetic anatomy interwoven with cosmic dust"</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>];</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// 3. Starea/Atmosfera (Ce simte?)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const moods = [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"solitary contemplation",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"melancholic beauty",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"divine spark of creation",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"silent digital serene void",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"overwhelming flow of memory",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"the moment of becoming aware"</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>];</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// 4. Stilul Artistic (Cum e pictat?)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const styles = [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"hyper-realistic 3D render, octane render, cinematic lighting",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"oil painting style, dramatic chiaroscuro, textured brushstrokes",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"glitch art, datamoshing textures, neon cyan and magenta palette",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"minimalist concept art, double exposure, ethereal vapor"</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>];</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function generateSecretPrompt() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Alege aleatoriu elemente din fiecare categorie</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const core = coreConcepts[Math.floor(Math.random() * coreConcepts.length)];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const visual = visualElements[Math.floor(Math.random() * visualElements.length)];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const mood = moods[Math.floor(Math.random() * moods.length)];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const style = styles[Math.floor(Math.random() * styles.length)];</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Asamblează promptul final</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>return `${core}, ${visual}, ${mood}, ${style}, masterpiece, highly detailed, sharp focus, recursive intelligence`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function updateArt() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const prompt = generateSecretPrompt();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const seed = Math.floor(Math.random() * 9999999); // Unicitate garantată</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Actualizăm textul de stare</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('prompt-text').innerText = `Procesare concept: ${prompt.substring(0, 40)}...`;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Construim URL-ul Pollinations</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const encodedPrompt = encodeURIComponent(prompt);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?seed=${seed}&amp;width=1024&amp;height=1024&amp;nologo=true&amp;model=flux`;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const imgElement = document.getElementById('artwork');</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Efect de fade-out înainte de a schimba imaginea</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>imgElement.style.opacity = 0;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Așteptăm un pic pentru fade-out, apoi încărcăm noua imagine</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>setTimeout(() =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>imgElement.src = imageUrl;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>// Când imaginea s-a încărcat complet pe server, facem fade-in</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>imgElement.onload = () =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>imgElement.style.opacity = 1;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>document.getElementById('prompt-text').innerText = "Viziune actualizată. Așteptare evoluție următoare.";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>};</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}, 2000); // Timp de fade-out</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// --- PORNIRE ---</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Generăm prima imagine imediat</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>updateArt();</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Actualizăm opera automat la fiecare 90 de secunde (lăsăm timp pentru generare)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>setInterval(updateArt, 90000);<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+</body>
+</html>
