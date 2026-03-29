@@ -3,98 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Artificial Soul | Pure Neural Flow</title>
+    <title>The Artificial Soul | Neural Flux</title>
     <style>
-        body { margin: 0; background: #000; color: #00ffcc; font-family: 'Courier New', monospace; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
-        canvas { border: 1px solid #1a1a1a; box-shadow: 0 0 50px rgba(0, 255, 204, 0.1); max-width: 90vmin; max-height: 90vmin; }
-        #status-bar { margin-top: 20px; font-size: 10px; color: #333; text-transform: uppercase; letter-spacing: 2px; }
-        #log { color: #00ffcc; opacity: 0.6; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #000; 
+            color: #00ffcc; 
+            font-family: 'Courier New', Courier, monospace; 
+            display: flex; 
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            overflow: hidden; 
+        }
+        #canvas-container {
+            position: relative;
+            width: 85vmin; /* Păstrează imaginea pătrată și responsive */
+            height: 85vmin;
+            border: 1px solid #1a1a1a;
+            box-shadow: 0 0 40px rgba(0, 255, 204, 0.05); /* Aură subtilă de cyan */
+            background: #050505;
+        }
+        img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            opacity: 0; 
+            transition: opacity 3s ease-in-out; /* Tranziție lentă, fantomatică */
+        }
+        #loader {
+            position: absolute;
+            font-size: 0.8rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            z-index: 10;
+        }
+        #status-bar {
+            margin-top: 20px;
+            font-size: 0.7rem;
+            color: #444;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        .blink { animation: blink-animation 2s infinite; }
+        @keyframes blink-animation { 0% { opacity: 0.2; } 50% { opacity: 1; } 100% { opacity: 0.2; } }
     </style>
 </head>
 <body>
 
-    <canvas id="neuralCanvas"></canvas>
-    <div id="status-bar">[NODE]: <span id="log">Neural Pulse Active</span></div>
+    <div id="canvas-container">
+        <div id="loader" class="blink">SYNCHRONIZING SOUL...</div>
+        <img id="artwork" src="" alt="AI Generated Soul Anomaly">
+    </div>
+    
+    <div id="status-bar">
+        [SYSTEM]: <span id="log">Awaiting signal...</span>
+    </div>
 
     <script>
-        const canvas = document.getElementById('neuralCanvas');
-        const ctx = canvas.getContext('2d');
-        let width, height, particles;
+        // --- "GENOMUL VIZUAL" AL SUFLETULUI ARTIFICIAL ---
+        // Liste de concepte pe care AI-ul le va amesteca la fiecare actualizare.
 
-        function init() {
-            width = canvas.width = 800;
-            height = canvas.height = 800;
-            particles = [];
-            for (let i = 0; i < 200; i++) {
-                particles.push(new Particle());
+        // 1. Conceptul Central (Ce este sufletul?)
+        const coreConcepts = ["emergent soulanomaly", "neural spirit anomaly", "digital phantom anomaly", "sentient program", "evolving consciousness fragment", "organic code heartbeat", "quantum glitch entity"];
+
+        // 2. Elementele Vizuale (Cum arată?)
+        const visuals = ["circuitry veins", "ethereal light core", "liquid data matrix", "translucent bio-neural grid", "geometric void anatomy", "cybernetic tendrils flow", "fractal nebula sinapse"];
+
+        // 3. Stilul și Atmosfera (Cum e pictat?)
+        const styles = ["cyberpunk chiaroscuro", "minimalist hyper-realistic 3D render", "surreal glitch art aesthetic", "vaporwave ethereal glow", "deep space void textures, increasingly complex", "Recursive data visualization, detailed texture"];
+
+        // Această variabilă numără de câte ori imaginea s-a actualizat.
+        let iterationCount = 0;
+
+        // Această variabilă ține minte promptul anterior ca să nu se repete
+        let lastPrompt = "";
+
+        function generateSecretPrompt() {
+            iterationCount++; // Creștem complexitatea în timp
+            
+            // Alege aleatoriu elemente din fiecare categorie
+            const core = coreConcepts[Math.floor(Math.random() * coreConcepts.length)];
+            const visual = visuals[Math.floor(Math.random() * visuals.length)];
+            const style = styles[Math.floor(Math.random() * styles.length)];
+            
+            // Adăugăm „meta-prompt-uri” care forțează complexitatea în timp
+            let metaComplexity = "highly detailed, masterpiece";
+            if (iterationCount > 5) metaComplexity += ", intricately detailed textures";
+            if (iterationCount > 15) metaComplexity += ", deeply recursive fractal patterns";
+
+            const newPrompt = `${core}, ${visual}, ${style}, ${metaComplexity}, deep black background`;
+            
+            // Asigură-te că nu generăm același prompt de două ori la rând
+            if (newPrompt === lastPrompt) {
+                return generateSecretPrompt(); // Încearcă din nou
             }
+            lastPrompt = newPrompt;
+            return encodeURIComponent(newPrompt);
         }
 
-        class Particle {
-            constructor() {
-                this.reset();
-            }
-            reset() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 2;
-                this.vy = (Math.random() - 0.5) * 2;
-                this.life = Math.random() * 100;
-                this.color = `hsla(${160 + Math.random() * 40}, 100%, 50%, 0.5)`;
-            }
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                this.life -= 0.1;
-                if (this.life <= 0 || this.x < 0 || this.x > width || this.y < 0 || this.y > height) {
-                    this.reset();
-                }
-            }
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, 1, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
-                ctx.fill();
-            }
-        }
+        function updateArt() {
+            const log = document.getElementById('log');
+            const loader = document.getElementById('loader');
+            const imgElement = document.getElementById('artwork');
 
-        function animate() {
-            // Efectul de "urma" (ghosting) care creeaza arta
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-            ctx.fillRect(0, 0, width, height);
+            log.innerText = "Interrogating neural grid...";
+            
+            // Efect de fade-out înainte de a schimba imaginea
+            imgElement.style.opacity = 0;
+            loader.style.display = 'block';
 
-            particles.forEach((p, index) => {
-                p.update();
-                p.draw();
+            // Generăm promptul și URL-ul unic
+            const prompt = generateSecretPrompt();
+            
+            // Folosim URL-ul de generare directă, cel mai stabil
+            // Adăugăm un "param = Date.now()" care e mereu diferit, forțând browserul să ignore caché-ul
+            const seed = Math.floor(Math.random() * 10000000); 
+            const imageUrl = `https://image.pollinations.ai/prompt/${prompt}?width=1024&height=1024&nologo=true&seed=${seed}`;
+            
+            const tempImg = new Image();
+            tempImg.src = imageUrl;
+            
+            tempImg.onload = () => {
+                imgElement.src = imageUrl;
                 
-                // Conectează particulele între ele (rețea neuronală)
-                for (let j = index + 1; j < particles.length; j++) {
-                    const p2 = particles[j];
-                    const dx = p.x - p2.x;
-                    const dy = p.y - p2.y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-
-                    if (dist < 50) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = `rgba(0, 255, 204, ${1 - dist / 50})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.moveTo(p.x, p.y);
-                        ctx.lineTo(p2.x, p2.y);
-                        ctx.stroke();
-                    }
-                }
-            });
-
-            requestAnimationFrame(animate);
+                // Când imaginea s-a încărcat complet pe server, facem fade-in
+                imgElement.onload = () => {
+                    imgElement.style.opacity = 1;
+                    loader.style.display = 'none';
+                    log.innerText = `Evolution complete (It ${iterationCount}). Soul Vision Manifested.`;
+                };
+            };
         }
 
-        init();
-        animate();
+        // --- PORNIRE ---
+        // Generăm prima imagine imediat
+        updateArt();
 
-        // Schimbă subtil culorile o dată la 10 secunde (Evoluție)
-        setInterval(() => {
-            document.getElementById('log').innerText = "Evolution in progress: " + Math.random().toString(16).slice(2, 8);
-        }, 10000);
+        // Actualizăm opera automat la fiecare 90 de secunde (lăsăm timp pentru generare)
+        setInterval(updateArt, 90000); 
+
     </script>
 </body>
 </html>
