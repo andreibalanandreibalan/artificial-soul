@@ -1,63 +1,127 @@
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sufletul Artificial</title>
+    <title>The Artificial Soul | Living AI Art</title>
     <style>
-        body { margin: 0; background: #000; color: #00ffcc; font-family: monospace; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
-        #container { position: relative; width: 90vmin; height: 90vmin; border: 1px solid #111; display: flex; justify-content: center; align-items: center; }
-        img { max-width: 100%; max-height: 100%; opacity: 0; transition: opacity 3s; }
-        #status { margin-top: 20px; font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 2px; }
-        .loading { position: absolute; color: #00ffcc; font-size: 14px; letter-spacing: 5px; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 0.2; } 50% { opacity: 1; } 100% { opacity: 0.2; } }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #000; 
+            color: #00ffcc; 
+            font-family: 'Courier New', Courier, monospace; 
+            display: flex; 
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            overflow: hidden; 
+        }
+        #canvas-container {
+            position: relative;
+            width: 85vmin;
+            height: 85vmin;
+            border: 1px solid #1a1a1a;
+            background: #050505;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        img { 
+            position: absolute;
+            max-width: 100%; 
+            max-height: 100%; 
+            opacity: 0; 
+            transition: opacity 3s ease-in-out;
+            z-index: 2;
+        }
+        /* Style for the previous image to ensure smooth transition */
+        .old-img { z-index: 1; opacity: 0.3; }
+
+        #loader {
+            font-size: 0.8rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            z-index: 0;
+        }
+        #status-bar {
+            margin-top: 20px;
+            font-size: 0.7rem;
+            color: #444;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        .blink { animation: blink-animation 2s infinite; }
+        @keyframes blink-animation { 0% { opacity: 0.2; } 50% { opacity: 1; } 100% { opacity: 0.2; } }
     </style>
 </head>
 <body>
 
-    <div id="container">
-        <div id="loader" class="loading">SINKRONIZARE...</div>
-        <img id="artwork">
+    <div id="canvas-container">
+        <div id="loader" class="blink">SYNCHRONIZING SOUL...</div>
+        <img id="artwork-new">
+        <img id="artwork-old" class="old-img">
     </div>
-    <div id="status" id="log">Sistem activ. Așteptare semnal...</div>
+    
+    <div id="status-bar">
+        [SYSTEM]: <span id="log">Initializing neural flux...</span>
+    </div>
 
     <script>
-        const themes = ["artificial soul", "digital ghost", "neural network mind", "cybernetic spirit", "silicon consciousness"];
-        const visuals = ["translucent circuits", "glowing ethereal core", "bioluminescent data", "liquid light anatomy"];
+        const concepts = ["artificial soul", "digital consciousness", "silicon heartbeat", "neural ghost", "synthetic entity"];
+        const visuals = ["circuitry veins", "ethereal light core", "liquid data flow", "abstract cyber anatomy"];
+        const styles = ["cinematic", "hyper-realistic", "dark atmospheric", "dreamlike glitch"];
 
-        function getNewArt() {
-            const img = document.getElementById('artwork');
+        let isFirstLoad = true;
+
+        function updateArt() {
+            const log = document.getElementById('log');
             const loader = document.getElementById('loader');
-            const log = document.getElementById('status');
+            const newImg = document.getElementById('artwork-new');
+            const oldImg = document.getElementById('artwork-old');
 
-            img.style.opacity = 0;
-            loader.style.display = 'block';
-            log.innerText = "Interogare bază de date neuronală...";
-
-            const prompt = `${themes[Math.floor(Math.random()*themes.length)]}, ${visuals[Math.floor(Math.random()*visuals.length)]}, highly detailed, cinematic, deep black background`;
-            const seed = Math.floor(Math.random() * 100000);
+            log.innerText = "Dreaming of new forms...";
             
-            // URL nou, mai stabil
-            const finalUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1024&height=1024&nologo=true&seed=${seed}`;
+            const prompt = `${concepts[Math.floor(Math.random()*concepts.length)]}, ${visuals[Math.floor(Math.random()*visuals.length)]}, ${styles[Math.floor(Math.random()*styles.length)]}, high resolution, deep black background, masterpiece`;
+            const seed = Math.floor(Math.random() * 999999);
+            
+            // Using a more robust URL structure
+            const targetUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?seed=${seed}&width=1024&height=1024&nologo=true`;
 
-            const testImg = new Image();
-            testImg.src = finalUrl;
+            const temp = new Image();
+            temp.src = targetUrl;
 
-            testImg.onload = function() {
-                img.src = finalUrl;
-                img.style.opacity = 1;
-                loader.style.display = 'none';
-                log.innerText = "Viziune capturată. Următoarea iterație în 60s.";
+            temp.onload = () => {
+                // Move current "new" image to "old" background slot
+                if (!isFirstLoad) {
+                    oldImg.src = newImg.src;
+                    oldImg.style.opacity = 0.2;
+                }
+
+                // Load the actual new image
+                newImg.style.opacity = 0;
+                newImg.src = targetUrl;
+                
+                setTimeout(() => {
+                    newImg.style.opacity = 1;
+                    loader.style.display = 'none';
+                    log.innerText = "Evolution complete. Witnessing manifestation.";
+                    isFirstLoad = false;
+                }, 100);
             };
 
-            testImg.onerror = function() {
-                log.innerText = "Eroare server (Supraîncărcare). Reîncercare în 10 secunde...";
-                setTimeout(getNewArt, 10000);
+            temp.onerror = () => {
+                // If server fails, wait 5 seconds and try a different seed silently
+                log.innerText = "Neural path blocked. Rerouting...";
+                setTimeout(updateArt, 5000);
             };
         }
 
-        getNewArt();
-        setInterval(getNewArt, 60000);
+        // Initial trigger
+        updateArt();
+        
+        // Update every 60 seconds
+        setInterval(updateArt, 60000);
     </script>
 </body>
 </html>
