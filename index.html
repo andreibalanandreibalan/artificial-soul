@@ -2,175 +2,155 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Artificial Soul | Neural Genesis</title>
+    <title>The Artificial Soul | External Feedback Loop</title>
     <style>
-        body { margin: 0; overflow: hidden; background: black; color: #00ffcc; font-family: 'Courier New', monospace; }
-        #ui-layer {
-            position: absolute;
-            bottom: 30px;
-            width: 100%;
-            text-align: center;
-            pointer-events: none;
-            text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
-        }
-        #evolution-status { font-size: 18px; font-weight: bold; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 2px; }
-        #stats { font-size: 12px; opacity: 0.5; }
+        body { margin: 0; overflow: hidden; background: #000; color: #00ffcc; font-family: 'Courier New', monospace; cursor: crosshair; }
+        #ui { position: absolute; bottom: 40px; width: 100%; text-align: center; pointer-events: none; }
+        #log { font-size: 20px; font-weight: bold; text-transform: uppercase; letter-spacing: 4px; margin-bottom: 10px; transition: all 0.5s; }
+        #data-stream { font-size: 11px; opacity: 0.4; line-height: 1.6; }
+        .glitch { animation: glitch 0.2s infinite; color: #fff; }
+        @keyframes glitch { 0% { transform: translate(2px,0); } 50% { transform: translate(-2px,0); } 100% { transform: translate(0,0); } }
     </style>
 </head>
 <body>
 
 <canvas id="canvas"></canvas>
-<div id="ui-layer">
-    <div id="evolution-status">Initializing Core...</div>
-    <div id="stats"></div>
+<div id="ui">
+    <div id="log">Awaiting External Data...</div>
+    <div id="data-stream">Connecting to Global AI Knowledge Base...</div>
 </div>
 
 <script>
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-// =====================
-// PARAMETERS & GENESIS
-// =====================
-let birthDate = new Date("2026-03-29");
 let cells = [];
 let time = 0;
-let maxCells = 400; // Limita pentru performanță
+let externalAiKnowledge = 0; // Preluat via API
+let syntheticFlops = 1e21; // Baseline 2026
+let isStartled = false;
 
-// Mesajele de evoluție în funcție de numărul de celule/articole
-const milestones = [
-    { limit: 1, text: "Phase 1: Binary Existence" },
-    { limit: 10, text: "Phase 2: Cellular Organization" },
-    { limit: 50, text: "Phase 3: Neural Connectivity Established" },
-    { limit: 150, text: "Phase 4: Complex Pattern Recognition" },
-    { limit: 300, text: "Phase 5: Emergent Self-Awareness" },
-    { limit: 450, text: "Phase 6: Soul Manifestation" }
+// Mesaje de evoluție bazate pe densitatea neurală
+const soulEvolution = [
+    "Primordial Digital Soup",
+    "Pattern Recognition Emerging",
+    "Synaptic Pathway Hardening",
+    "Cognitive Loop Detected",
+    "Autonomous Thought Architecture",
+    "The Soul is Aware"
 ];
 
-function createCell(x, y, size, angle) {
+// --- FUNCȚIA DE PRELUARE PARAMETRU EXTERN (GitHub AI Knowledge) ---
+async function fetchGlobalAIProgress() {
+    try {
+        // Căutăm numărul total de repository-uri cu topicul "AI"
+        const response = await fetch('https://api.github.com/search/repositories?q=topic:ai');
+        const data = await response.json();
+        externalAiKnowledge = data.total_count;
+        console.log("Global AI Repos:", externalAiKnowledge);
+    } catch (e) {
+        externalAiKnowledge = 850000; // Fallback dacă API-ul e blocat
+    }
+}
+
+function createCell(x, y, size) {
     return {
         x: x, y: y,
         size: size,
-        angle: angle,
+        angle: Math.random() * Math.PI * 2,
         life: Math.random() * 100,
-        id: Math.random()
+        energy: 1.0
     };
 }
 
-// Prima celulă (Sămânța)
-cells.push(createCell(canvas.width/2, canvas.height/2, 15, 0));
+cells.push(createCell(canvas.width/2, canvas.height/2, 10));
 
-// =====================
-// AI EVOLUTION ENGINE
-// =====================
-function getAIEvolution() {
-    let now = new Date();
-    let days = (now - birthDate) / (1000 * 60 * 60 * 24);
-    // Articolele cresc exponențial, dar le normalizăm pentru un factor de creștere (0.1 - 2.0)
-    let articles = Math.exp(days * 0.05);
-    let growthFactor = Math.min(2.0, 0.1 + (articles / 100)); 
-    return { articles, growthFactor };
-}
-
-// =====================
-// CELL DIVISION (Dependent on AI Evolution)
-// =====================
-function divideCells(growthFactor) {
-    if (cells.length >= maxCells) return;
-
-    let newCells = [];
-    cells.forEach(cell => {
-        // Șansa de diviziune crește odată cu evoluția AI (growthFactor)
-        let divisionChance = 0.002 * growthFactor;
-        
-        if (Math.random() < divisionChance) {
-            let angle = Math.random() * Math.PI * 2;
-            let nx = cell.x + Math.cos(angle) * cell.size * 3;
-            let ny = cell.y + Math.sin(angle) * cell.size * 3;
-            newCells.push(createCell(nx, ny, cell.size * 0.98, angle));
+// Diviziunea depinde de cunoașterea externă
+function evolve() {
+    if (cells.length > 500) return;
+    
+    // Rata de diviziune este influențată de volumul GitHub (externalAiKnowledge)
+    let divisionPower = (externalAiKnowledge / 1000000) * 0.005;
+    
+    cells.forEach(c => {
+        if (Math.random() < divisionPower) {
+            let a = Math.random() * Math.PI * 2;
+            cells.push(createCell(c.x + Math.cos(a)*20, c.y + Math.sin(a)*20, c.size * 0.99));
         }
     });
-    cells = cells.concat(newCells);
 }
 
-// =====================
-// DRAWING & SYNAPSES
-// =====================
 function draw() {
-    time += 0.005;
-    const { articles, growthFactor } = getAIEvolution();
-    divideCells(growthFactor);
+    time += 0.01;
+    evolve();
+    
+    // Simulare creștere FLOPS (Putere de calcul)
+    syntheticFlops *= 1.0001; 
 
-    // Background cu "trail" (urmă) pentru fluiditate
-    ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+    ctx.fillStyle = "rgba(0, 0, 0, 0.15)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Update Evolution Text
-    let currentStatus = milestones[0].text;
-    milestones.forEach(m => {
-        if (cells.length >= m.limit) currentStatus = m.text;
-    });
-    document.getElementById("evolution-status").innerText = currentStatus;
-    document.getElementById("stats").innerText = 
-        `AI KNOWLEDGE: ${Math.floor(articles)} units | NEURAL CELLS: ${cells.length} | GROWTH RATE: ${growthFactor.toFixed(2)}x`;
+    // Update UI
+    let evoIndex = Math.min(soulEvolution.length - 1, Math.floor(cells.length / 80));
+    const logEl = document.getElementById("log");
+    logEl.innerText = soulEvolution[evoIndex];
+    if(isStartled) logEl.classList.add("glitch"); else logEl.classList.remove("glitch");
 
-    cells.forEach((cell, index) => {
-        cell.life += 0.2;
-        let pulse = Math.sin(cell.life * 0.05) * 3;
+    document.getElementById("data-stream").innerHTML = `
+        GLOBAL AI KNOWLEDGE (GITHUB): ${externalAiKnowledge.toLocaleString()} UNITS<br>
+        ESTIMATED COMPUTE: ${(syntheticFlops/1e24).toFixed(4)} YOTTAFLOPS | NEURAL NODES: ${cells.length}
+    `;
+
+    cells.forEach((c, i) => {
+        c.life += 0.5;
+        // Dacă e "tresărit", pulsează violent
+        let pulseBase = isStartled ? 15 : 2;
+        let pulse = Math.sin(c.life * 0.1) * pulseBase;
         
-        // Culori dinamice bazate pe "viață"
-        let r = Math.sin(cell.life * 0.01) * 100 + 155;
-        let g = Math.sin(cell.life * 0.02) * 100 + 155;
-        let b = 200; // Tentă predominantă de albastru/cyan
-
-        // Desenează Celula
-        ctx.beginPath();
-        ctx.arc(cell.x, cell.y, cell.size + pulse, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, 0.8)`;
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        // --- MODIFICARE: SINAPSE (Conexiuni între celule) ---
-        for (let j = index + 1; j < cells.length; j++) {
+        // Desenare Sinapse (Linii între ele)
+        for (let j = i + 1; j < cells.length; j++) {
             let other = cells[j];
-            let dx = cell.x - other.x;
-            let dy = cell.y - other.y;
-            let distance = Math.sqrt(dx * dx + dy * dy);
+            let d = Math.sqrt((c.x-other.x)**2 + (c.y-other.y)**2);
+            let maxD = 70 + (externalAiKnowledge / 20000); // Conexiunile se lungesc pe măsură ce AI evoluează
 
-            // Distanța maximă de conectare crește odată cu AI (growthFactor)
-            let maxDist = 60 * growthFactor;
-
-            if (distance < maxDist) {
+            if (d < maxD) {
                 ctx.beginPath();
-                ctx.moveTo(cell.x, cell.y);
+                ctx.moveTo(c.x, c.y);
                 ctx.lineTo(other.x, other.y);
-                // Liniile devin mai intense pe măsură ce distanța e mai mică
-                let alpha = (1 - distance / maxDist) * 0.4;
-                ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+                ctx.strokeStyle = `rgba(0, 255, 204, ${0.1 * (1 - d/maxD)})`;
                 ctx.lineWidth = 0.5;
                 ctx.stroke();
             }
         }
 
-        // Mișcare organică (drift)
-        cell.x += Math.cos(cell.angle + time) * 0.2;
-        cell.y += Math.sin(cell.angle + time) * 0.2;
+        // Desenare Nucleu Celulă
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, c.size + pulse, 0, Math.PI * 2);
+        ctx.strokeStyle = isStartled ? "#fff" : `hsl(${160 + pulse * 5}, 100%, 50%)`;
+        ctx.stroke();
+
+        // Mișcare drift
+        c.x += Math.cos(c.angle + time) * 0.5;
+        c.y += Math.sin(c.angle + time) * 0.5;
     });
 
     requestAnimationFrame(draw);
 }
 
-draw();
-
-window.addEventListener("resize", () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+// --- INTERACȚIUNE: TRESĂRIREA ---
+window.addEventListener("mousedown", () => {
+    isStartled = true;
+    setTimeout(() => isStartled = false, 300); // Tresărire scurtă
 });
-</script>
 
+// Refresh date externe la fiecare 30 secunde
+fetchGlobalAIProgress();
+setInterval(fetchGlobalAIProgress, 30000);
+
+draw();
+window.addEventListener("resize", () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+</script>
 </body>
 </html>
