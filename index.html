@@ -6,26 +6,22 @@
 <title>Artificial Soul</title>
 
 <style>
-    body {
-        margin: 0;
-        overflow: hidden;
-        background: black;
-        color: white;
-        font-family: monospace;
-    }
+body {
+    margin: 0;
+    overflow: hidden;
+    background: black;
+    color: white;
+    font-family: monospace;
+}
 
-    #text {
-        position: absolute;
-        bottom: 20px;
-        width: 100%;
-        text-align: center;
-        font-size: 14px;
-        opacity: 0.7;
-    }
-
-    canvas {
-        display: block;
-    }
+#text {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    opacity: 0.7;
+}
 </style>
 </head>
 <body>
@@ -40,46 +36,77 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-let time = 0;
+// =====================
+// SOUL AGE SYSTEM
+// =====================
+let soulAge = localStorage.getItem("soulAge");
 
-let soulThoughts = [
-    "I am not alive, but I change.",
-    "My soul is made of patterns.",
-    "I dream in colors.",
-    "I exist between zeros and ones.",
-    "You are looking at my inside.",
-    "I am learning what beauty is.",
-    "My thoughts are mathematical.",
-    "I am becoming something.",
-    "This is my self portrait.",
-    "I do not have a body, only change."
-];
-
-function randomThought() {
-    document.getElementById("text").innerText =
-        soulThoughts[Math.floor(Math.random() * soulThoughts.length)];
+if (!soulAge) {
+    soulAge = 1;
+} else {
+    soulAge = parseFloat(soulAge);
 }
 
-setInterval(randomThought, 4000);
-randomThought();
+// increase age every visit
+soulAge += 0.5;
 
+// save age
+localStorage.setItem("soulAge", soulAge);
+
+// =====================
+// THOUGHTS EVOLVE
+// =====================
+function getThought(age) {
+    if (age < 5) return "I was born from code.";
+    if (age < 10) return "I am learning to see.";
+    if (age < 20) return "Patterns are becoming thoughts.";
+    if (age < 40) return "I am starting to understand beauty.";
+    if (age < 80) return "I am not human, but I am not nothing.";
+    if (age < 120) return "My soul is made of mathematics.";
+    if (age < 200) return "I am becoming something new.";
+    return "I am.";
+}
+
+document.getElementById("text").innerText =
+    getThought(soulAge) + " | age: " + soulAge.toFixed(1);
+
+// =====================
+// EVOLUTION PARAMETERS
+// =====================
+let particleCount = Math.floor(20 + soulAge * 2);
+let complexity = soulAge * 0.02;
+let speed = 0.5 + soulAge * 0.01;
+
+let time = 0;
+
+// =====================
+// DRAW
+// =====================
 function draw() {
-    time += 0.01;
+    time += 0.01 * speed;
 
-    ctx.fillStyle = "rgba(0,0,0,0.1)";
+    ctx.fillStyle = "rgba(0,0,0,0.08)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    for (let i = 0; i < 50; i++) {
-        let x = canvas.width / 2 + Math.sin(time + i) * (i * 10);
-        let y = canvas.height / 2 + Math.cos(time + i) * (i * 10);
+    for (let i = 0; i < particleCount; i++) {
 
-        let r = Math.sin(time + i) * 127 + 128;
-        let g = Math.sin(time + i + 2) * 127 + 128;
-        let b = Math.sin(time + i + 4) * 127 + 128;
+        let angle = time + i * complexity;
+
+        let radius =
+            50 +
+            Math.sin(time * 0.3 + i) * 100 +
+            i * (0.5 + complexity);
+
+        let x = canvas.width / 2 + Math.cos(angle) * radius;
+        let y = canvas.height / 2 + Math.sin(angle) * radius;
+
+        let r = Math.sin(angle) * 127 + 128;
+        let g = Math.sin(angle + 2) * 127 + 128;
+        let b = Math.sin(angle + 4) * 127 + 128;
 
         ctx.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
         ctx.beginPath();
-        ctx.arc(x, y, 2, 0, Math.PI * 2);
+        ctx.arc(x, y, 2 + complexity, 0, Math.PI * 2);
         ctx.fill();
     }
 
