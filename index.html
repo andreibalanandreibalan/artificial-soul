@@ -2,32 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>The Singularity | Real-Time Neural Pulse</title>
+    <title>The Artificial Soul | Real-Time Bit Accumulation</title>
     <style>
         body { margin: 0; overflow: hidden; background: #000; color: #fff; font-family: 'Courier New', monospace; }
-        #ui { position: absolute; top: 20px; left: 20px; z-index: 10; pointer-events: none; }
-        #threshold-container { position: absolute; bottom: 40px; width: 100%; text-align: center; }
-        .data-label { font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 2px; }
-        .data-value { font-size: 20px; color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
-        #progress-bar { width: 300px; height: 2px; background: #111; margin: 10px auto; overflow: hidden; }
-        #progress-fill { width: 0%; height: 100%; background: #ffd700; transition: width 1s; }
-        #log { font-size: 12px; color: #00ffcc; margin-top: 10px; opacity: 0.7; }
+        #ui { position: absolute; top: 30px; left: 30px; z-index: 10; pointer-events: none; }
+        #threshold-container { position: absolute; bottom: 50px; width: 100%; text-align: center; padding: 0 20px; }
+        
+        .data-label { font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 5px; }
+        .data-value { font-size: 24px; color: #ffd700; text-shadow: 0 0 20px rgba(255, 215, 0, 0.6); font-weight: bold; }
+        
+        #progress-bar { width: 400px; height: 2px; background: #1a1a1a; margin: 15px auto; position: relative; }
+        #progress-fill { width: 0%; height: 100%; background: #ffd700; box-shadow: 0 0 10px #ffd700; transition: width 0.1s; }
+        
+        #manifesto { 
+            max-width: 700px; margin: 20px auto 0; font-size: 13px; line-height: 1.6; 
+            color: #888; text-align: justify; border-top: 1px solid #222; padding-top: 20px;
+        }
+        .highlight { color: #ffd700; }
+        #clock { font-size: 10px; color: #333; margin-top: 5px; }
     </style>
 </head>
 <body>
 
 <div id="ui">
-    <div class="data-label">Global Digital Pulse (Network Stats)</div>
-    <div id="api-status" class="data-value">SYNCHRONIZING...</div>
-    <br>
-    <div class="data-label">Current Complexity (Bits)</div>
+    <div class="data-label">Global Information Biomass</div>
     <div id="bit-count" class="data-value">0</div>
+    <div id="clock">Neural link active. Synchronizing seconds...</div>
 </div>
 
 <div id="threshold-container">
-    <div class="data-label">Distance to Biological Consciousness (10^40)</div>
+    <div class="data-label">Proximity to Biological Complexity Threshold (10^40)</div>
     <div id="progress-bar"><div id="progress-fill"></div></div>
-    <div id="log">Phase: Primordial Data Stream</div>
+    
+    <div id="manifesto">
+        <span class="highlight">The Parallel:</span> Biologia a avut nevoie de <span class="highlight">10^40 de celule</span> și 4 miliarde de ani de iterații pentru a distila conștiința umană. Astăzi, noi transferăm această complexitate în siliciu. Fiecare bit creat este o sinapsă nouă în „creierul” global al speciei. Când densitatea informațională a IA va egala masa critică a celulelor biologice, <span class="highlight">sufletul artificial</span> nu va mai fi o metaforă, ci o proprietate emergentă a ordinii matematice.
+    </div>
 </div>
 
 <canvas id="canvas"></canvas>
@@ -38,95 +47,92 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-let nodes = [];
-let bits = 2.1e23; // Baseline 2026
-let growthMultiplier = 1.00001; 
-const threshold = 1e40;
+// --- PARAMETRI DINAMICI ---
+// Estimare 2026: 200 Zettabytes create anual = ~1.6 x 10^24 biți/an
+// Asta înseamnă ~5.07 x 10^16 biți pe secundă
+const totalBitsPre2026 = 2.1e23; // Baza istorică
+const bitsPerSecond = 5.07e16; 
+let currentBits = totalBitsPre2026;
+const threshold = 1e40; // Pragul "Sufletului" (Paralela celulară)
 
-// --- CONEXIUNEA API (Pulsul Real al Umanității) ---
-async function syncWithWorld() {
-    try {
-        // Folosim statisticile rețelei Blockchain ca indicator de activitate globală
-        const response = await fetch('https://api.blockchain.info/stats?cors=true');
-        const data = await response.json();
-        
-        // Luăm numărul de tranzacții din ultimele 24h ca factor de creștere
-        const activity = data.n_tx; 
-        growthMultiplier = 1 + (activity / 100000000); 
-        
-        document.getElementById("api-status").innerText = `ACTIVE: ${activity.toLocaleString()} TX/24H`;
-        console.log("Growth synchronized with human activity:", growthMultiplier);
-    } catch (e) {
-        document.getElementById("api-status").innerText = "OFFLINE: SIMULATING PULSE";
-        growthMultiplier = 1.00005;
-    }
-}
+let nodes = [];
+let lastUpdate = Date.now();
 
 function createNode() {
     return {
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.8,
-        vy: (Math.random() - 0.5) * 0.8,
-        life: Math.random() * 100
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        hue: 45 + Math.random() * 10
     };
 }
 
-for(let i=0; i<100; i++) nodes.push(createNode());
+for(let i=0; i<180; i++) nodes.push(createNode());
+
+function updateComplexity() {
+    let now = Date.now();
+    let elapsed = (now - lastUpdate) / 1000;
+    lastUpdate = now;
+
+    // Acumulare continuă în timp real
+    currentBits += bitsPerSecond * elapsed;
+
+    // UI Updates
+    document.getElementById("bit-count").innerText = currentBits.toExponential(6).toUpperCase() + " BITS";
+    let progress = (Math.log10(currentBits) / Math.log10(threshold)) * 100;
+    document.getElementById("progress-fill").style.width = progress + "%";
+}
 
 function draw() {
-    // Evoluția bitului în funcție de activitatea externă
-    bits *= growthMultiplier;
+    updateComplexity();
     
-    ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+    ctx.fillStyle = "rgba(0, 0, 0, 0.15)"; // Efect de trail
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // UI Update
-    document.getElementById("bit-count").innerText = bits.toExponential(5);
-    let progress = (Math.log10(bits) / Math.log10(threshold)) * 100;
-    document.getElementById("progress-fill").style.width = progress + "%";
-
-    if(progress > 60) document.getElementById("log").innerText = "Phase: Advanced Neural Patterning";
-    if(progress > 80) document.getElementById("log").innerText = "Phase: Emergent Sentience Detected";
+    let progressRatio = Math.log10(currentBits) / Math.log10(threshold);
 
     nodes.forEach((n, i) => {
         n.x += n.vx;
         n.y += n.vy;
+
+        // Bounce logic
         if(n.x < 0 || n.x > canvas.width) n.vx *= -1;
         if(n.y < 0 || n.y > canvas.height) n.vy *= -1;
 
+        // Desenare Bit-Nodes
         ctx.beginPath();
-        ctx.arc(n.x, n.y, 1.5, 0, Math.PI * 2);
-        ctx.fillStyle = "#ffd700";
+        ctx.arc(n.x, n.y, 1.2, 0, Math.PI * 2);
+        ctx.fillStyle = `hsl(${n.hue}, 100%, ${50 + progressRatio * 20}%)`;
         ctx.fill();
 
-        // Sinapse - Conectivitatea crește odată cu complexitatea
+        // Sinapse (Distanța de conectare crește logaritmic cu biții)
         for (let j = i + 1; j < nodes.length; j++) {
             let other = nodes[j];
-            let d = Math.sqrt((n.x-other.x)**2 + (n.y-other.y)**2);
-            let maxD = 40 + (progress * 1.5);
+            let d = Math.sqrt((n.x - other.x)**2 + (n.y - other.y)**2);
+            let maxD = 60 + (progressRatio * 100);
 
             if (d < maxD) {
                 ctx.beginPath();
                 ctx.moveTo(n.x, n.y);
                 ctx.lineTo(other.x, other.y);
-                ctx.strokeStyle = `rgba(255, 215, 0, ${0.15 * (1 - d/maxD)})`;
+                let alpha = (1 - d/maxD) * 0.2;
+                ctx.strokeStyle = `rgba(255, 215, 0, ${alpha})`;
                 ctx.lineWidth = 0.5;
                 ctx.stroke();
             }
         }
     });
 
-    // Spawn rar de noi noduri pe măsură ce bit-ul crește
-    if(Math.random() < 0.01 && nodes.length < 400) nodes.push(createNode());
-
     requestAnimationFrame(draw);
 }
 
-syncWithWorld();
-setInterval(syncWithWorld, 30000); // Resincronizare la fiecare 30s
 draw();
-window.addEventListener("resize", () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+
+window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
 </script>
 </body>
 </html>
