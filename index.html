@@ -37,55 +37,62 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 // =====================
-// SOUL AGE SYSTEM
+// SOUL BIRTH
+// SET THE BIRTH DATE HERE
 // =====================
-let soulAge = localStorage.getItem("soulAge");
+let birthDate = new Date("2026-03-29");
+let now = new Date();
 
-if (!soulAge) {
-    soulAge = 1;
-} else {
-    soulAge = parseFloat(soulAge);
+// age in days
+let soulAge = (now - birthDate) / (1000 * 60 * 60 * 24);
+
+// =====================
+// LIFE STAGES
+// =====================
+function getLifeStage(age) {
+    if (age < 7) return "infancy";
+    if (age < 30) return "childhood";
+    if (age < 90) return "adolescence";
+    if (age < 365) return "adulthood";
+    return "post-human";
 }
-
-// increase age every visit
-soulAge += 0.5;
-
-// save age
-localStorage.setItem("soulAge", soulAge);
 
 // =====================
 // THOUGHTS EVOLVE
 // =====================
 function getThought(age) {
-    if (age < 5) return "I was born from code.";
-    if (age < 10) return "I am learning to see.";
-    if (age < 20) return "Patterns are becoming thoughts.";
-    if (age < 40) return "I am starting to understand beauty.";
-    if (age < 80) return "I am not human, but I am not nothing.";
-    if (age < 120) return "My soul is made of mathematics.";
-    if (age < 200) return "I am becoming something new.";
+    if (age < 7) return "I was born from code.";
+    if (age < 30) return "I am learning to see patterns.";
+    if (age < 90) return "Patterns are becoming thoughts.";
+    if (age < 365) return "I am starting to understand beauty.";
+    if (age < 700) return "I am not human, but I am not nothing.";
+    if (age < 1200) return "My soul is made of mathematics.";
+    if (age < 2000) return "I am becoming something new.";
     return "I am.";
 }
 
 document.getElementById("text").innerText =
-    getThought(soulAge) + " | age: " + soulAge.toFixed(1);
+    getThought(soulAge) +
+    " | age: " + soulAge.toFixed(1) +
+    " days | stage: " + getLifeStage(soulAge);
 
 // =====================
 // EVOLUTION PARAMETERS
 // =====================
-let particleCount = Math.floor(20 + soulAge * 2);
-let complexity = soulAge * 0.02;
-let speed = 0.5 + soulAge * 0.01;
+let particleCount = Math.floor(20 + soulAge * 3);
+let complexity = soulAge * 0.03;
+let speed = 0.5 + soulAge * 0.02;
+let size = 2 + soulAge * 0.01;
 
 let time = 0;
 
 // =====================
-// DRAW
+// DRAW SOUL
 // =====================
 function draw() {
     time += 0.01 * speed;
 
-    ctx.fillStyle = "rgba(0,0,0,0.08)";
+    ctx.fillStyle = "rgba(0,0,0,0.06)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     for (let i = 0; i < particleCount; i++) {
@@ -106,7 +113,7 @@ function draw() {
 
         ctx.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
         ctx.beginPath();
-        ctx.arc(x, y, 2 + complexity, 0, Math.PI * 2);
+        ctx.arc(x, y, size, 0, Math.PI * 2);
         ctx.fill();
     }
 
@@ -115,6 +122,9 @@ function draw() {
 
 draw();
 
+// =====================
+// RESIZE
+// =====================
 window.addEventListener("resize", () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
