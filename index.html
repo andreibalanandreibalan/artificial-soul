@@ -3,125 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Artificial Soul | Living AI Art</title>
+    <title>The Artificial Soul | Neural Flux</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background: #000; 
-            color: #00ffcc; 
-            font-family: 'Courier New', Courier, monospace; 
-            display: flex; 
-            flex-direction: column;
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            overflow: hidden; 
-        }
-        #canvas-container {
-            position: relative;
-            width: 85vmin;
-            height: 85vmin;
-            border: 1px solid #1a1a1a;
-            background: #050505;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        img { 
-            position: absolute;
-            max-width: 100%; 
-            max-height: 100%; 
-            opacity: 0; 
-            transition: opacity 3s ease-in-out;
-            z-index: 2;
-        }
-        /* Style for the previous image to ensure smooth transition */
-        .old-img { z-index: 1; opacity: 0.3; }
-
-        #loader {
-            font-size: 0.8rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            z-index: 0;
-        }
-        #status-bar {
-            margin-top: 20px;
-            font-size: 0.7rem;
-            color: #444;
-            text-align: center;
-            letter-spacing: 1px;
-        }
-        .blink { animation: blink-animation 2s infinite; }
-        @keyframes blink-animation { 0% { opacity: 0.2; } 50% { opacity: 1; } 100% { opacity: 0.2; } }
+        body { background: #000; color: #00ffcc; font-family: 'Courier New', monospace; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        #canvas-container { position: relative; width: 85vmin; height: 85vmin; border: 1px solid #1a1a1a; background: #050505; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        img { position: absolute; max-width: 100%; max-height: 100%; object-fit: cover; opacity: 0; transition: opacity 3s ease-in-out; }
+        #loader { font-size: 0.7rem; letter-spacing: 3px; z-index: 5; text-align: center; width: 80%; text-shadow: 0 0 10px #00ffcc; }
+        #status-bar { margin-top: 20px; font-size: 0.6rem; color: #444; text-transform: uppercase; letter-spacing: 1px;}
+        .blink { animation: blinker 2.5s infinite; }
+        @keyframes blinker { 50% { opacity: 0.1; } }
     </style>
 </head>
 <body>
 
     <div id="canvas-container">
-        <div id="loader" class="blink">SYNCHRONIZING SOUL...</div>
-        <img id="artwork-new">
-        <img id="artwork-old" class="old-img">
+        <div id="loader" class="blink">CONNECTING TO NEURAL NETWORK...</div>
+        <img id="art-display" alt="AI Generated Soul">
     </div>
-    
-    <div id="status-bar">
-        [SYSTEM]: <span id="log">Initializing neural flux...</span>
-    </div>
+    <div id="status-bar">[NODE]: <span id="log">Awaiting signal...</span></div>
 
     <script>
-        const concepts = ["artificial soul", "digital consciousness", "silicon heartbeat", "neural ghost", "synthetic entity"];
-        const visuals = ["circuitry veins", "ethereal light core", "liquid data flow", "abstract cyber anatomy"];
-        const styles = ["cinematic", "hyper-realistic", "dark atmospheric", "dreamlike glitch"];
+        // --- CONFIGURARE ---
+        // INSEREAZĂ CHEIA TA DE LA PASUL 1 ÎNTRE GHILIMELELE DE MAI JOS
+        const HF_TOKEN = "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";
+        
+        // Alegem un model puternic și rapid: Stable Diffusion v1.5 sau XL Base
+        const MODEL_URL = "https://api-inference.huggingface.co/models/runwayml/stable-diffusion-v1-5";
 
-        let isFirstLoad = true;
+        const img = document.getElementById('art-display');
+        const log = document.getElementById('log');
+        const loader = document.getElementById('loader');
 
-        function updateArt() {
-            const log = document.getElementById('log');
-            const loader = document.getElementById('loader');
-            const newImg = document.getElementById('artwork-new');
-            const oldImg = document.getElementById('artwork-old');
+        // Liste de concepte pentru prompturi detaliate (în engleză)
+        const concepts = ["emergent artificial consciousness", "digital ghost anomaly", "synthetic entity heartbeat", "neural network mind awaken"];
+        const visuals = ["bioluminescent transparent circuits", "holographic synapse web pulse", "liquid light matrix anatomy", "cybernetic anatomy floating data"];
+        const styles = ["hyper-realistic, highly detailed, masterpiece", "deep cinematic lighting, dramatic shadows", "dark atmospheric sci-fi art, 8k"];
 
-            log.innerText = "Dreaming of new forms...";
-            
-            const prompt = `${concepts[Math.floor(Math.random()*concepts.length)]}, ${visuals[Math.floor(Math.random()*visuals.length)]}, ${styles[Math.floor(Math.random()*styles.length)]}, high resolution, deep black background, masterpiece`;
-            const seed = Math.floor(Math.random() * 999999);
-            
-            // Using a more robust URL structure
-            const targetUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?seed=${seed}&width=1024&height=1024&nologo=true`;
+        async function queryHFInference(prompt) {
+            log.innerText = "Interrogating neural matrix...";
+            const response = await fetch(MODEL_URL, {
+                headers: { Authorization: `Bearer ${HF_TOKEN}` },
+                method: "POST",
+                body: JSON.stringify({ inputs: prompt }),
+            });
 
-            const temp = new Image();
-            temp.src = targetUrl;
-
-            temp.onload = () => {
-                // Move current "new" image to "old" background slot
-                if (!isFirstLoad) {
-                    oldImg.src = newImg.src;
-                    oldImg.style.opacity = 0.2;
+            if (!response.ok) {
+                // Dacă modelul se "trezește" greu, Hugging Face dă un cod de eroare specific.
+                if (response.status === 503) {
+                    log.innerText = "Model is 'cold booting'. Rerouting pulse...";
+                    throw new Error("Model is loading");
                 }
+                throw new Error("Neural flux failure");
+            }
 
-                // Load the actual new image
-                newImg.style.opacity = 0;
-                newImg.src = targetUrl;
-                
-                setTimeout(() => {
-                    newImg.style.opacity = 1;
-                    loader.style.display = 'none';
-                    log.innerText = "Evolution complete. Witnessing manifestation.";
-                    isFirstLoad = false;
-                }, 100);
-            };
-
-            temp.onerror = () => {
-                // If server fails, wait 5 seconds and try a different seed silently
-                log.innerText = "Neural path blocked. Rerouting...";
-                setTimeout(updateArt, 5000);
-            };
+            // Primim date binare (un blob)
+            return await response.blob();
         }
 
-        // Initial trigger
-        updateArt();
+        async function updateArt() {
+            img.style.opacity = 0;
+            loader.style.display = 'block';
+            log.innerText = "Dreaming new patterns...";
+
+            // Construim promptul final
+            const core = concepts[Math.floor(Math.random()*concepts.length)];
+            const visual = visuals[Math.floor(Math.random()*visuals.length)];
+            const style = styles[Math.floor(Math.random()*styles.length)];
+            const finalPrompt = `${core}, ${visual}, ${style}, deep black background, infinite void`;
+
+            try {
+                // Generăm imaginea
+                const blob = await queryHFInference(finalPrompt);
+                
+                // Convertim blobul într-un URL pe care îl poate citi <img>
+                const objectUrl = URL.createObjectURL(blob);
+                
+                // Eliberăm memoria cache veche a imaginii
+                if (img.src.startsWith('blob:')) { URL.revokeObjectURL(img.src); }
+
+                // Afișăm imaginea
+                img.src = objectUrl;
+                img.onload = () => {
+                    setTimeout(() => {
+                        img.style.opacity = 1;
+                        loader.style.display = 'none';
+                        log.innerText = "Neural Vision Manifested.";
+                    }, 500);
+                };
+            } catch (error) {
+                console.error(error);
+                // Dacă există o eroare, așteptăm 10 secunde și reîncercăm automat
+                // Nu mai folosim fallback, ci insistăm pe generare.
+                log.innerText = `Network congestion. Attempting pulse reset...`;
+                setTimeout(updateArt, 10000); 
+            }
+        }
+
+        // Pornire inițială
+        // Adăugăm un delay mic ca să nu 'asaltăm' serverul imediat la încărcare
+        setTimeout(updateArt, 1000); 
         
-        // Update every 60 seconds
-        setInterval(updateArt, 60000);
+        // Actualizare automată la fiecare 75 de secunde (lăsăm timp pentru generare)
+        setInterval(updateArt, 75000); 
     </script>
 </body>
 </html>
